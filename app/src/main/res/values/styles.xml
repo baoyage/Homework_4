@@ -1,0 +1,33 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+<!--    <style name="dark" parent="Theme.MaterialComponents.DayNight">-->
+<!--    </style>-->
+    <style name="dark1" parent="Theme.AppCompat.DayNight">
+    </style>
+    <style name="NameStyle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:seekBarStyle">@android:color/holo_orange_dark</item>
+
+
+
+
+
+    </style>
+    <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#1B82D2</item>
+    </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/yellow</item>
+        <item name="colorControlActivated">@color/yellow</item>
+    </style>
+</resources>
