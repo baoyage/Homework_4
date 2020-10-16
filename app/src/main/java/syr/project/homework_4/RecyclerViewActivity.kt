@@ -2,15 +2,13 @@ package syr.project.homework_4
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
+import android.widget.Toast
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_recycler_view.*
-import syr.project.homewo.MyMovieListAdapter
 
-class RecyclerViewActivity : AppCompatActivity()/*,MyMovieListAdapter.MyItemClickListener*/ {
+class RecyclerViewActivity : AppCompatActivity(),RecyclerViewFragment.OnRecyclerInteractionListener {
     var movieList: List<MovieData> = Gson().fromJson(movies, Array<MovieData>::class.java).asList()
-
+    var movie: MovieData? =null
+    var posterid: Int? =null
     var posterTable:MutableMap<String, Int> = mutableMapOf()
     init{
         posterTable[movieList[0].title]=R.drawable.pci1aryw7oj2eyto2nmyekhhicp
@@ -30,14 +28,24 @@ class RecyclerViewActivity : AppCompatActivity()/*,MyMovieListAdapter.MyItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recycler_view)
-        recyclerView.layoutManager= GridLayoutManager(this,1)
-        val myAdapter= MyMovieListAdapter(movieList,posterTable,this)
+        if(savedInstanceState==null){
+            supportFragmentManager.beginTransaction().replace(R.id.fragment,RecyclerViewFragment(movieList,posterTable)).commit()
+        }
+//        recyclerView.layoutManager= GridLayoutManager(this,1)
+//        val myAdapter= MyMovieListAdapter(movieList,posterTable,this)
 //        myAdapter.setMyItemClickListener(this)
-        recyclerView.adapter=myAdapter
+//        recyclerView.adapter=myAdapter
 
     }
 
-//    override fun onItemClick(movieList: List<MovieData>) {
-//        TODO("Not yet implemented")
-//    }
+    override fun onItemClicked(movie:MovieData, posterid: Int?) {
+        Toast.makeText(this,movie.title,Toast.LENGTH_LONG).show()
+        this.movie=movie
+        this.posterid=posterid
+
+
+        supportFragmentManager.beginTransaction().replace(R.id.fragment,DetailFragment.newInstance(movie,
+            posterid!!
+        )).addToBackStack(null).commit()
+    }
 }
