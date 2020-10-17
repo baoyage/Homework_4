@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_margin="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -16,6 +16,7 @@
             android:orientation="vertical">
 
             <CheckBox
+                android:id="@+id/rVCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 

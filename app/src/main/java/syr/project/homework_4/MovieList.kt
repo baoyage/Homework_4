@@ -1,7 +1,31 @@
 package syr.project.homework_4
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_main.*
+class MovieList {
+    var movieList: List<MovieData> = Gson().fromJson(movies, Array<MovieData>::class.java).asList()
+    var posterTable:MutableMap<String, Int> = mutableMapOf()
+    init{
+//        var movieList: ArrayList<MovieData> =movieList1 as ArrayList<MovieData>
 
-val movies = """        
+
+        posterTable[movieList[0].title]=R.drawable.pci1aryw7oj2eyto2nmyekhhicp
+        posterTable[movieList[1].title]=R.drawable.oyg9tl7fcrp4ez9vid6ukzwdndz
+        posterTable[movieList[2].title]=R.drawable.riaoojrfvvhotyaogoi0wr7okse
+        posterTable[movieList[3].title]=R.drawable.zgvbrulkupqpbwginedkjpyqum4
+        posterTable[movieList[4].title]=R.drawable.t7xhp8sqtvanzecvn1oqrvwcxti
+        posterTable[movieList[5].title]=R.drawable.q719jxxezooyaps6babgknononx
+        posterTable[movieList[6].title]=R.drawable.hek3koduyrqk7fihpxsa6mt2zc3
+        posterTable[movieList[7].title]=R.drawable.h1b7tw0t399vdjacwjh8m87469b
+        posterTable[movieList[8].title]=R.drawable.velwphvmqeqkcxggneu8ymio52r
+        posterTable[movieList[9].title]=R.drawable.plnlrtbuult0rh3xsjmpubiso3l
+        for( i in movieList.indices){
+            movieList[i].checked = false
+        }
+
+    }
+}
+
+    var movies = """        
 [
     {
       "stars": "Melanie Zanetti, Giulio Berruti, James Andrew Fraser",
@@ -211,3 +235,7 @@ val movies = """
   ]
 
 """.trimIndent()
+
+
+
+

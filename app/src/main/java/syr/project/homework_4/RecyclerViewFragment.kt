@@ -10,15 +10,26 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
 
-class RecyclerViewFragment(val movieList: List<MovieData>, val posterTable: MutableMap<String, Int>) : Fragment(),
+class RecyclerViewFragment() : Fragment(),
     MyMovieListAdapter.MyItemClickListener{
     private var listener: OnRecyclerInteractionListener? = null
-
+    var myAdapter=MyMovieListAdapter(ArrayList(MovieList().movieList),MovieList().posterTable)
     override fun onItemClickedFromAdapter(movie: MovieData, posterid: Int?) {
         onItemClickedFromRecyclerViewFragment(movie,posterid)
     }
+
+    override fun onItemLongClickedFromAdapter(position: Int) {
+        myAdapter.duplicateMovie(position)
+        myAdapter.notifyDataSetChanged()
+
+
+    }
+
+
+
     interface OnRecyclerInteractionListener {
         fun onItemClicked(movie: MovieData,posterid: Int?)
+
     }
     fun onItemClickedFromRecyclerViewFragment(movie: MovieData,posterid: Int?) {
         listener?.onItemClicked(movie,posterid)
@@ -40,9 +51,23 @@ class RecyclerViewFragment(val movieList: List<MovieData>, val posterTable: Muta
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager= GridLayoutManager(context,1)
-        val myAdapter= MyMovieListAdapter(movieList,posterTable)
+//        val myAdapter= MyMovieListAdapter(movieList ,posterTable)
         myAdapter.setMyItemClickListener(this)
         recyclerView.adapter=myAdapter
+        selectAll.setOnClickListener {
+            myAdapter.setSelectAll()
+            myAdapter.notifyDataSetChanged()
+//            recyclerView.swapAdapter(myAdapter,true)
+        }
+        clearAll.setOnClickListener {
+            myAdapter.setClearAll()
+            myAdapter.notifyDataSetChanged()
+//            recyclerView.swapAdapter(myAdapter,true)
+        }
+        delete.setOnClickListener {
+            myAdapter.deleteMovies()
+            myAdapter.notifyDataSetChanged()
+        }
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,6 +82,7 @@ class RecyclerViewFragment(val movieList: List<MovieData>, val posterTable: Muta
         super.onDetach()
         listener = null
     }
+
 
 
 //    companion object {
