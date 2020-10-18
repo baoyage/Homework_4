@@ -8,9 +8,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".RecyclerViewActivity"></activity>
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme"
+
+
+        >
+        <activity android:name=".RecyclerViewActivity"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

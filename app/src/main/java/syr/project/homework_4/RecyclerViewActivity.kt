@@ -40,5 +40,17 @@ class RecyclerViewActivity : AppCompatActivity(),RecyclerViewFragment.OnRecycler
         )).addToBackStack(null).commit()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable("movie",movie)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if(savedInstanceState!=null){
+            movie=savedInstanceState.getSerializable("movie")as MovieData
+        }
+    }
+
 
 }

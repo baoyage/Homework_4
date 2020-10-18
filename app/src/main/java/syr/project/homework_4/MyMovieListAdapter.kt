@@ -5,21 +5,48 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import androidx.core.view.ViewPropertyAnimatorListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
-import kotlinx.android.synthetic.main.movie_list_item.view.*
+import kotlinx.android.synthetic.main.movie_list_item_left.view.*
+import androidx.recyclerview.widget.DefaultItemAnimator
+import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder
+
 
 class MyMovieListAdapter(var movieList: ArrayList<MovieData>, var posterTable: MutableMap<String, Int>
 ) : RecyclerView.Adapter<MyMovieListAdapter.MovieViewHolder>() {
     var myListener:MyItemClickListener? = null
+    var lastPosition=-1
 
     lateinit var movie:MovieData
     var posterid: Int? = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val view=LayoutInflater.from(parent.context).inflate(R.layout.movie_list_item,parent,false)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val view:View
+        view=when(viewType){
+            1 -> {
+                layoutInflater.inflate(R.layout.movie_list_item_right,parent,false)
+            }
+            2 -> {
+                layoutInflater.inflate(R.layout.movie_list_item_left,parent,false)
+            }
+            else->{
+                layoutInflater.inflate(R.layout.movie_list_item_right,parent,false)
+            }
+        }
+
         return MovieViewHolder(view)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        if(movieList[position].vote_average>8){
+            return 1
+        }
+        else{
+            return 2
+        }
+    }
     inner class MovieViewHolder(view: View?) : RecyclerView.ViewHolder(view!!) {
         val rVMovieTitle= view?.rVTitle
         val rVOverview= view?.rVOverview
@@ -28,7 +55,7 @@ class MyMovieListAdapter(var movieList: ArrayList<MovieData>, var posterTable: M
         val rVCheckBox= view?.rVCheckBox
         init{
             rVCheckBox?.setOnCheckedChangeListener { rVCheckBox,isChecked->
-                movieList[adapterPosition].checked=isChecked
+                movieList[this.adapterPosition].checked=isChecked
 
             }
             view?.setOnClickListener {
@@ -50,6 +77,8 @@ class MyMovieListAdapter(var movieList: ArrayList<MovieData>, var posterTable: M
             }
         }
 
+
+
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
@@ -59,8 +88,18 @@ class MyMovieListAdapter(var movieList: ArrayList<MovieData>, var posterTable: M
         holder.rVposterid!!.setImageResource(posterTable[movie.title]!!)
         holder.rVRating!!.text= movie.vote_average.toString()
         holder.rVCheckBox!!.isChecked= movie.checked!!
+//        setAnimation(holder.itemView, position)
 
 
+    }
+    fun setAnimation(view:View,position:Int){
+        if(position!=lastPosition){
+            val animation = AnimationUtils.loadAnimation(view.context, android.R.anim.slide_in_left)
+            animation.duration = 700
+            animation.startOffset = position * 100L
+            view.startAnimation(animation)
+        }
+        lastPosition = position
     }
 
     override fun getItemCount(): Int {
@@ -80,14 +119,17 @@ class MyMovieListAdapter(var movieList: ArrayList<MovieData>, var posterTable: M
     fun setSelectAll() {
         for( i in movieList.indices){
             movieList[i].checked = true
+            notifyItemChanged(i)
         }
-        notifyDataSetChanged()
+//        notifyDataSetChanged()
+
     }
     fun setClearAll() {
         for( i in movieList.indices){
             movieList[i].checked = false
+            notifyItemChanged(i)
         }
-        notifyDataSetChanged()
+//        notifyDataSetChanged()
     }
     fun deleteMovies() {
         var cnt = 0
@@ -107,14 +149,15 @@ class MyMovieListAdapter(var movieList: ArrayList<MovieData>, var posterTable: M
                 }
             }
         }
-        notifyDataSetChanged()
-
+//        notifyDataSetChanged()
+//        notifyItemRemoved()
     }
     fun duplicateMovie(position: Int){
 
         var movie=movieList[position].copy()
         movieList.add(position+1,movie)
         notifyItemInserted(position+1)
+//        notifyDataSetChanged()
 
     }
 
